@@ -1,0 +1,42 @@
+public class TestAlbum extends ALbumJacksonUse {
+
+	public static void main(String[] args) throws JsonParseException,
+			JsonMappingException, IOException {
+
+		List<Album> listAlbums = new ArrayList<Album>();
+		listAlbums = jacksonMethod();
+		
+		System.out.println("Not sorted list " + listAlbums);
+		Collections.sort(listAlbums, new CompareClass());
+		
+		System.out.println("======================");
+		for(int i = 0; i < listAlbums.size(); i++){
+			final Album album = listAlbums.get(i);
+			printAlbum(album);
+		}
+	}
+
+	private static void printAlbum(Album album) {
+		System.out.println(album.getTitle() + " " +album.getSinger() + " " + album.getTime().getMinute()+ " " + album.getTime().getSecond());
+	}
+}
+
+public class CompareClass implements Comparator<Album> {
+	
+	@Override
+	public int compare(Album o1, Album o2) {
+		if (o1.getTitle().equals(o2.getTitle())) {
+			if (o1.getSinger().equals(o2.getSinger())) {
+				if (o1.getTime().getMinute() == o2.getTime().getMinute()) {
+					return Integer.compare(o1.getTime().getSecond(), o2
+							.getTime().getSecond());
+				}
+				return Integer.compare(o1.getTime().getMinute(), o2.getTime()
+						.getMinute());
+			}
+			return o1.getSinger().compareTo(o2.getSinger());
+		}
+
+		return o1.getTitle().compareTo(o2.getTitle());
+	}
+}
